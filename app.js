@@ -2,14 +2,14 @@ new Vue({
     el: '#app',
     data: {
         items: [
-            "Güreş", "Dilek", "Zabit", "Kin",
+            "Güreş", "Dilek", "Zabıt", "Kin",
             "Keder", "Kasavet", "Tasa", "Yas",
             "Sus", "Ölçü", "Kadans", "Gam",
             "Gordion", "Safranbolu", "Ani", "Ulu Camii"
         ],
         shuffledItems: [],
         correctGroups: [
-            ["Güreş", "Dilek", "Zabit", "Kin"],
+            ["Güreş", "Dilek", "Zabıt", "Kin"],
             ["Keder", "Kasavet", "Tasa", "Yas"],
             ["Sus", "Ölçü", "Kadans", "Gam"],
             ["Gordion", "Safranbolu", "Ani", "Ulu Camii"]
