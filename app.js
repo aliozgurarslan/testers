@@ -2,23 +2,23 @@ new Vue({
     el: '#app',
     data: {
         items: [
-            "Güreş", "Dilek", "Zabıt", "Kin",
-            "Keder", "Kasavet", "Tasa", "Yas",
-            "Sus", "Ölçü", "Kadans", "Gam",
-            "Gordion", "Safranbolu", "Ani", "Ulu Camii"
+            "1876", "1921", "1961", "1982",
+            "1960", "1971", "1980", "2016",
+            "1920", "0912", "2019", "2901",
+            "0001", "0010", "0011", "0100"
         ],
         shuffledItems: [],
         correctGroups: [
-            ["Güreş", "Dilek", "Zabıt", "Kin"],
-            ["Keder", "Kasavet", "Tasa", "Yas"],
-            ["Sus", "Ölçü", "Kadans", "Gam"],
-            ["Gordion", "Safranbolu", "Ani", "Ulu Camii"]
+            ["1876", "1921", "1961", "1982"],
+            ["1960", "1971", "1980", "2016"],
+            ["1920", "0912", "2019", "2901"],
+            ["0001", "0010", "0011", "0100"]
         ],
         correctGroupMessages: [
-            "_____ tutmak",
-            "\"Üzüntü\" ile eş anlamlı",
-            "Müzik teorisi terimleri",
-            "Anadolu'daki Unesco Dünya Kültür Mirası varlıkları"
+            "Türk Anayasa tarihleri",
+            "Türkiye'de gerçekleşen darbeler ve darbe girişimleri",
+            "Anagram rakamlar (Önemli bir tarih dahil)",
+            "İkili sayı sisteminde 1'den 4'e kadar olan sayılar"
         ],
         correctItems: [],
         selectedItems: [],
