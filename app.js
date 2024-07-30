@@ -15,10 +15,10 @@ new Vue({
             ["0001", "0010", "0011", "0100"]
         ],
         correctGroupMessages: [
-            "Anayasa tarihleri",
-            "Türkiye'de gerçekleşen darbeler ve darbe girişimleri",
+            "20. yüzyıldaki anayasal gelişmeler",
+            "Darbeler ve darbe girişimleri",
             "Sayısal anagramlar",
-            "İkili sayı sisteminde 1'den 4'e kadar olan sayılar"
+            "İkili sayı sisteminde 1'den 4'e kadar sayılar"
         ],
         correctItems: [],
         selectedItems: [],
