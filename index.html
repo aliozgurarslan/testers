@@ -53,6 +53,7 @@
             padding: 10px;
             border-radius: 5px;
             box-sizing: border-box;
+            max-width: 100%; /* Ensure it doesn't exceed the container */
         }
 
         .correct-group div {
@@ -148,7 +149,7 @@
         .success-message {
             margin-top: 10px;
             font-size: 16px;
-            color: green;
+            color: #729B9B; /* Matching the green rectangles */
         }
 
         .game-over-message {
@@ -203,7 +204,7 @@
 </head>
 <body>
     <div id="app" class="container">
-        <h1 style="font-size: 18px;">Dört adet dörtlü grup oluştur!</h1>
+        <h1 style="font-size: 18px; color: #2A3630;">Dört adet dörtlü grup oluştur!</h1>
         <div class="correct-groups-container">
             <div v-for="(group, index) in correctGroupsWithMessages" :key="index" class="correct-group">
                 <div>{{ group.items.join(', ') }}</div>
@@ -215,25 +216,34 @@
                 {{ item }}
             </div>
         </div>
-        <div v-if="wrongGuessMessage || nearMissMessage || successMessage || gameOverMessage" class="message">
+        <p class="attempts-left">Kalan hak: {{ attemptsLeft }}</p>
+        <div v-if="wrongGuessMessage || nearMissMessage" class="message">
             <span>{{ wrongGuessMessage }}</span>
             <span v-if="nearMissMessage"> {{ nearMissMessage }}</span>
-            <span v-if="successMessage">{{ successMessage }}</span>
-            <span v-if="gameOverMessage">{{ gameOverMessage }}</span>
         </div>
-        <p class="attempts-left">Kalan hak: {{ attemptsLeft }}</p>
+        <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+        <div v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</div>
         <div style="display: flex; justify-content: center;">
-            <button @click="deselectAll">Temizle</button>
+            <button @click="deselectAll" :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }">Temizle</button>
             <button @click="shuffleItems">Karıştır</button>
             <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
         </div>
-        <div class="wall-number">Duvar #2 - 28/07/2024</div>
+        <div class="wall-number">Duvar #3 - 29/07/2024</div>
         <div v-if="showCookieConsent" class="cookie-consent">
             Bu oyun seansınızı hatırlamak için çerez kullanmaktadır.
             <button @click="acceptCookies">Kabul et</button>
         </div>
     </div>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLPEHH99V"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZLPEHH99V');
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="app.js"></script>
 </body>
