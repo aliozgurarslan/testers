@@ -2,17 +2,17 @@ new Vue({
     el: '#app',
     data: {
         items: [
-            "1924", "1921", "1961", "1982",
-            "1960", "1971", "1980", "2016",
-            "1920", "0912", "2019", "2901",
-            "0001", "0010", "0011", "0100"
+            "Çember", "Tam", "Keçi", "Top",
+            "Çeşitlilik", "Tehlike", "Sfer", "Mühendislik",
+            "Ardıç", "Hepileri", "Akyürek", "Günaydın",
+            "Topuz", "Kılıç", "Mızrak", "Pala"
         ],
         shuffledItems: [],
         correctGroups: [
-            ["1921", "1924", "1961", "1982"],
-            ["1960", "1971", "1980", "2016"],
-            ["1920", "0912", "2019", "2901"],
-            ["0001", "0010", "0011", "0100"]
+            ["Çember", "Tam", "Keçi", "Top"],
+            ["Sfer", "Tehlike", "Çeşitlilik", "Mühendislik"],
+            ["Ardıç", "Hepileri", "Akyürek", "Günaydın"],
+            ["Topuz", "Kılıç", "Muzrak", "Pala"]
         ],
         correctGroupMessages: [
             "20. yüzyıldaki anayasal gelişmeler",
