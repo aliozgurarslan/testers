@@ -1,12 +1,7 @@
 new Vue({
     el: '#app',
     data: {
-        items: [
-            "Çember", "Tam", "Keçi", "Top", // Sakal tipleri
-            "Çeşitlilik", "Tehlike", "Sfer", "Mühendislik", // Biyo_____
-            "Ardıç", "Hepileri", "Akyürek", "Günaydın", // Tanınmış Engin'ler
-            "Topuz", "Kılıç", "Mızrak", "Pala" // İlkel silahlar
-        ],
+        items: ["Çember", "Tam", "Keçi", "Top", "Çeşitlilik", "Tehlike", "Sfer", "Mühendislik", "Ardıç", "Hepileri", "Akyürek", "Günaydın", "Topuz", "Kılıç", "Mızrak", "Pala"],
         shuffledItems: [],
         correctGroups: [
             ["Çember", "Tam", "Keçi", "Top"],
