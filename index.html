@@ -228,7 +228,7 @@
             <button @click="shuffleItems">Karıştır</button>
             <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
         </div>
-        <div class="wall-number">Duvar #5 - 31/07/2024</div>
+        <div class="wall-number" id="wall-number"></div>
         <div v-if="showCookieConsent" class="cookie-consent">
             Bu oyun seansınızı hatırlamak için çerez kullanmaktadır.
             <button @click="acceptCookies">Kabul et</button>
@@ -245,12 +245,20 @@
       gtag('config', 'G-0ZLPEHH99V');
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <!-- Inline JavaScript to dynamically add the script tag with a date query string -->
     <script>
         var script = document.createElement('script');
-        var dateString = '20240731'; // Replace with your actual date string logic
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        var dateString = year + month + day;
         script.src = 'app.js?v=' + dateString;
         document.head.appendChild(script);
+
+        // Dynamic wall number and date
+        var wallNumber = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
+        var wallDate = day + '/' + month + '/' + year;
+        document.getElementById('wall-number').innerText = 'Duvar #' + wallNumber + ' - ' + wallDate;
     </script>
 </body>
 </html>
