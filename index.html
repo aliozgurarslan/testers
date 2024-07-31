@@ -246,19 +246,25 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script>
-        var script = document.createElement('script');
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = ("0" + (date.getMonth() + 1)).slice(-2);
-        var day = ("0" + date.getDate()).slice(-2);
-        var dateString = year + month + day;
-        script.src = 'app.js?v=' + dateString;
-        document.head.appendChild(script);
+    var script = document.createElement('script');
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
 
-        // Dynamic wall number and date
-        var wallNumber = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
-        var wallDate = day + '/' + month + '/' + year;
-        document.getElementById('wall-number').innerText = 'Duvar #' + wallNumber + ' - ' + wallDate;
-    </script>
+    // Cache busting
+    var dateString = year + month + day;
+    script.src = 'app.js?v=' + dateString;
+    document.head.appendChild(script);
+
+    // Calculate wall number
+    var referenceDate = new Date('2024-07-27'); // Wall #1 reference date
+    var diffDays = Math.floor((date - referenceDate) / (1000 * 60 * 60 * 24));
+    var wallNumber = diffDays + 1; // Adding 1 to make wall #1 for reference date
+
+    // Format the wall number and date
+    var wallDate = day + '/' + month + '/' + year;
+    document.getElementById('wall-number').innerText = 'Duvar #' + wallNumber + ' - ' + wallDate;
+</script>
 </body>
 </html>
