@@ -1,7 +1,7 @@
 new Vue({
     el: '#app',
     data: {
-        items: ["Çember", "Tam", "Keçi", "Top", "Çeşitlilik", "Tehlike", "Sfer", "Mühendislik", "Ardıç", "Hepileri", "Akyürek", "Günaydın", "Topuz", "Kılıç", "Mızrak", "Pala"],
+        items: ["1921", "1924", "1961", "1982", "1960", "1971", "1980", "2016", "1920", "912", "2019", "2901", "0001", "0010", "0011", "0100"],
         shuffledItems: [],
         correctGroups: [
             ["Çember", "Tam", "Keçi", "Top"],
