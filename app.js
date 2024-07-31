@@ -12,7 +12,7 @@ new Vue({
             ["Çember", "Tam", "Keçi", "Top"],
             ["Sfer", "Tehlike", "Çeşitlilik", "Mühendislik"],
             ["Ardıç", "Hepileri", "Akyürek", "Günaydın"],
-            ["Topuz", "Kılıç", "Muzrak", "Pala"]
+            ["Topuz", "Kılıç", "Mızrak", "Pala"]
         ],
         correctGroupMessages: [
              "Sakal tipleri",
