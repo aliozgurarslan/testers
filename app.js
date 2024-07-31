@@ -25,7 +25,8 @@ new Vue({
         gameOverMessage: "",
         isWrong: false,
         wrongGuessItems: [],
-        showCookieConsent: true
+        showCookieConsent: true,
+        correctGuessesOrder: [] // To track the order of correct guesses
     },
     created() {
         this.checkIfPlayedToday();
@@ -42,12 +43,13 @@ new Vue({
         },
         correctGroupsWithMessages() {
             let groupsWithMessages = [];
-            for (let i = 0; i < this.correctGroups.length; i++) {
-                let groupItems = this.correctGroups[i];
+            for (let i = 0; i < this.correctGuessesOrder.length; i++) {
+                let groupIndex = this.correctGuessesOrder[i];
+                let groupItems = this.correctGroups[groupIndex];
                 if (groupItems.every(item => this.correctItems.includes(item))) {
                     groupsWithMessages.push({
                         items: groupItems,
-                        message: this.correctGroupMessages[i]
+                        message: this.correctGroupMessages[groupIndex]
                     });
                 }
             }
@@ -79,8 +81,14 @@ new Vue({
 
             this.previousGuesses.push(currentGuess);
 
-            let isCorrect = this.correctGroups.some(group => {
-                return this.arraysEqual(group.sort(), this.selectedItems.sort());
+            let isCorrect = this.correctGroups.some((group, index) => {
+                if (this.arraysEqual(group.sort(), this.selectedItems.sort())) {
+                    if (!this.correctGuessesOrder.includes(index)) {
+                        this.correctGuessesOrder.push(index);
+                    }
+                    return true;
+                }
+                return false;
             });
 
             if (isCorrect) {
@@ -154,7 +162,8 @@ new Vue({
                 nearMissMessage: this.nearMissMessage,
                 successMessage: this.successMessage,
                 gameOverMessage: this.gameOverMessage,
-                shuffledItems: this.shuffledItems
+                shuffledItems: this.shuffledItems,
+                correctGuessesOrder: this.correctGuessesOrder // Save the order of correct guesses
             }));
         },
         checkIfPlayedToday() {
@@ -170,6 +179,7 @@ new Vue({
                 this.successMessage = gameState.successMessage;
                 this.gameOverMessage = gameState.gameOverMessage;
                 this.shuffledItems = gameState.shuffledItems || this.items;
+                this.correctGuessesOrder = gameState.correctGuessesOrder || [];
             } else {
                 this.shuffleItems();
             }
