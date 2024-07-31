@@ -15,10 +15,10 @@ new Vue({
             ["Topuz", "Kılıç", "Muzrak", "Pala"]
         ],
         correctGroupMessages: [
-            "20. yüzyıldaki anayasal gelişmeler",
-            "Darbeler ve darbe girişimleri",
-            "Sayısal anagramlar",
-            "İkili sayı sisteminde 1'den 4'e kadar sayılar"
+             "Sakal tipleri",
+            "Biyo_____",
+            "Tanınmış Engin'ler",
+            "İlkel silahlar"
         ],
         correctItems: [],
         selectedItems: [],
