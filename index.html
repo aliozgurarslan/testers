@@ -53,7 +53,6 @@
             padding: 10px;
             border-radius: 5px;
             box-sizing: border-box;
-            max-width: 100%; /* Ensure it doesn't exceed the container */
         }
 
         .correct-group div {
@@ -149,7 +148,7 @@
         .success-message {
             margin-top: 10px;
             font-size: 16px;
-            color: #729B9B; /* Matching the green rectangles */
+            color: #2A9D8F; /* Same green as the rectangles' background */
         }
 
         .game-over-message {
@@ -217,34 +216,33 @@
             </div>
         </div>
         <p class="attempts-left">Kalan hak: {{ attemptsLeft }}</p>
-        <div v-if="wrongGuessMessage || nearMissMessage" class="message">
-            <span>{{ wrongGuessMessage }}</span>
-            <span v-if="nearMissMessage"> {{ nearMissMessage }}</span>
-        </div>
-        <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
-        <div v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</div>
         <div style="display: flex; justify-content: center;">
-            <button @click="deselectAll" :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }">Temizle</button>
+            <button :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }" @click="deselectAll">Temizle</button>
             <button @click="shuffleItems">Karıştır</button>
             <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
         </div>
-        <div class="wall-number">Duvar #5 - 31/07/2024</div>
+        <div v-if="wrongGuessMessage || nearMissMessage || successMessage || gameOverMessage" class="message">
+            <span>{{ wrongGuessMessage }}</span>
+            <span v-if="nearMissMessage"> {{ nearMissMessage }}</span>
+            <span v-if="successMessage" class="success-message">{{ successMessage }}</span>
+            <span v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</span>
+        </div>
+        <div class="wall-number">Duvar #3 - 29/07/2024</div>
         <div v-if="showCookieConsent" class="cookie-consent">
             Bu oyun seansınızı hatırlamak için çerez kullanmaktadır.
             <button @click="acceptCookies">Kabul et</button>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="app.js?v=1.0.0"></script> <!-- Update the version query string as needed -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLPEHH99V"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-0ZLPEHH99V');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0ZLPEHH99V');
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="app.js"></script>
 </body>
 </html>
