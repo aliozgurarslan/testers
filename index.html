@@ -148,7 +148,7 @@
         .success-message {
             margin-top: 10px;
             font-size: 16px;
-            color: #2A9D8F; /* Same green as the rectangles' background */
+            color: #729B8C; /* Same green as rectangles' background */
         }
 
         .game-over-message {
@@ -216,16 +216,16 @@
             </div>
         </div>
         <p class="attempts-left">Kalan hak: {{ attemptsLeft }}</p>
-        <div style="display: flex; justify-content: center;">
-            <button :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }" @click="deselectAll">Temizle</button>
-            <button @click="shuffleItems">Karıştır</button>
-            <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
-        </div>
-        <div v-if="wrongGuessMessage || nearMissMessage || successMessage || gameOverMessage" class="message">
+        <div v-if="wrongGuessMessage || nearMissMessage" class="message">
             <span>{{ wrongGuessMessage }}</span>
             <span v-if="nearMissMessage"> {{ nearMissMessage }}</span>
-            <span v-if="successMessage" class="success-message">{{ successMessage }}</span>
-            <span v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</span>
+        </div>
+        <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+        <div v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</div>
+        <div style="display: flex; justify-content: center;">
+            <button @click="deselectAll" :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }">Temizle</button>
+            <button @click="shuffleItems">Karıştır</button>
+            <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
         </div>
         <div class="wall-number">Duvar #3 - 29/07/2024</div>
         <div v-if="showCookieConsent" class="cookie-consent">
@@ -234,15 +234,15 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="app.js?v=1.0.0"></script> <!-- Update the version query string as needed -->
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLPEHH99V"></script>
+    <!-- Inline JavaScript to dynamically add the script tag with a date query string -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-0ZLPEHH99V');
+        var script = document.createElement('script');
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        script.src = 'app.js?v=' + year + month + day;
+        document.head.appendChild(script);
     </script>
 </body>
 </html>
