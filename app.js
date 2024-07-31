@@ -1,185 +1,261 @@
-new Vue({
-    el: '#app',
-    data: {
-        items: ["1921", "1924", "1961", "1982", "1960", "1971", "1980", "2016", "1920", "0912", "2019", "2901", "0001", "0010", "0011", "0100"],
-        shuffledItems: [],
-        correctGroups: [
-            ["1921", "1924", "1961", "1982"],
-            ["1960", "1971", "1980", "2016"],
-            ["1920", "0912", "2019", "2901"],
-            ["0001", "0010", "0011", "0100"]
-        ],
-        correctGroupMessages: [
-            "20. yüzyıldaki anayasal gelişmeler",
-            "Darbeler ve darbe girişimleri",
-            "Sayısal anagramlar",
-            "İkili sayı sisteminde 1'den 4'e kadar sayılar"
-        ],
-        correctItems: [],
-        selectedItems: [],
-        previousGuesses: [],
-        attemptsLeft: 4,
-        wrongGuessMessage: "",
-        nearMissMessage: "",
-        successMessage: "",
-        gameOverMessage: "",
-        isWrong: false,
-        wrongGuessItems: [],
-        showCookieConsent: true,
-        guessedGroups: [] // Add this to keep track of guessed groups
-    },
-    created() {
-        this.checkIfPlayedToday();
-        if (this.shuffledItems.length === 0) {
-            this.shuffleItems();
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dört adet dörtlü grup oluştur!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        if (localStorage.getItem('cookieConsent')) {
-            this.showCookieConsent = false;
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto; /* Center the container */
+            overflow: hidden; /* Prevent overflow */
         }
-    },
-    computed: {
-        remainingItems() {
-            return this.shuffledItems.filter(item => !this.correctItems.includes(item));
-        },
-        correctGroupsWithMessages() {
-            return this.guessedGroups;
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin: 20px 0;
         }
-    },
-    methods: {
-        toggleSelection(item) {
-            if (this.selectedItems.includes(item)) {
-                this.selectedItems = this.selectedItems.filter(i => i !== item);
-            } else {
-                if (this.selectedItems.length < 4) {
-                    this.selectedItems.push(item);
-                }
-            }
-        },
-        checkResults() {
-            if (this.selectedItems.length !== 4) {
-                this.wrongGuessMessage = 'Lütfen dört öğe seçin.';
-                return;
-            }
 
-            let currentGuess = [...this.selectedItems].sort().toString();
-            if (this.previousGuesses.includes(currentGuess)) {
-                this.wrongGuessMessage = 'Bu tahmini zaten yaptınız.';
-                this.selectedItems = [];
-                return;
-            }
-
-            this.previousGuesses.push(currentGuess);
-
-            let isCorrect = this.correctGroups.some(group => {
-                return this.arraysEqual(group.sort(), this.selectedItems.sort());
-            });
-
-            if (isCorrect) {
-                this.correctItems.push(...this.selectedItems);
-                this.guessedGroups.push({ items: [...this.selectedItems], message: this.getGroupMessage(this.selectedItems) }); // Track guessed groups
-                this.wrongGuessMessage = "";
-                this.nearMissMessage = "";
-                if (this.correctItems.length === this.items.length) {
-                    this.successMessage = "Tebrikler! Duvarı yendiniz! Her gün yeni bir duvar.";
-                }
-                this.storeGameState();
-            } else {
-                this.wrongGuessItems = [...this.selectedItems];
-                this.wrongGuessMessage = "Yanlış tahmin!";
-                this.isWrong = true;
-                setTimeout(() => {
-                    this.isWrong = false;
-                    this.wrongGuessItems = [];
-                }, 3000);
-                this.attemptsLeft--;
-
-                // Check for near miss
-                let nearMiss = this.correctGroups.some(group => {
-                    let intersection = group.filter(item => this.selectedItems.includes(item));
-                    return intersection.length === 3;
-                });
-                if (nearMiss) {
-                    this.nearMissMessage = "Bir yaklaşık!";
-                } else {
-                    this.nearMissMessage = "";
-                }
-
-                if (this.attemptsLeft === 0) {
-                    this.revealAllGroups();
-                    this.gameOverMessage = 'Bugün duvar galip geldi! Her gün yeni bir duvar.';
-                }
-                this.storeGameState();
-            }
-
-            this.selectedItems = [];
-        },
-        arraysEqual(a, b) {
-            if (a.length !== b.length) return false;
-            for (let i = 0; i < a.length; i++) {
-                if (a[i] !== b[i]) return false;
-            }
-            return true;
-        },
-        shuffleItems() {
-            this.shuffledItems = [...this.items].sort(() => Math.random() - 0.5);
-            this.storeGameState();
-        },
-        deselectAll() {
-            this.selectedItems = [];
-        },
-        revealAllGroups() {
-            for (let i = 0; i < this.correctGroups.length; i++) {
-                let groupItems = this.correctGroups[i];
-                if (!groupItems.every(item => this.correctItems.includes(item))) {
-                    this.correctItems.push(...groupItems);
-                }
-            }
-        },
-        storeGameState() {
-            localStorage.setItem('playedToday', true);
-            localStorage.setItem('gameState', JSON.stringify({
-                correctItems: this.correctItems,
-                selectedItems: this.selectedItems,
-                previousGuesses: this.previousGuesses,
-                attemptsLeft: this.attemptsLeft,
-                wrongGuessMessage: this.wrongGuessMessage,
-                nearMissMessage: this.nearMissMessage,
-                successMessage: this.successMessage,
-                gameOverMessage: this.gameOverMessage,
-                shuffledItems: this.shuffledItems,
-                guessedGroups: this.guessedGroups // Store guessed groups
-            }));
-        },
-        checkIfPlayedToday() {
-            const playedToday = localStorage.getItem('playedToday');
-            const gameState = JSON.parse(localStorage.getItem('gameState'));
-            if (playedToday && gameState) {
-                this.correctItems = gameState.correctItems;
-                this.selectedItems = gameState.selectedItems;
-                this.previousGuesses = gameState.previousGuesses;
-                this.attemptsLeft = gameState.attemptsLeft;
-                this.wrongGuessMessage = gameState.wrongGuessMessage;
-                this.nearMissMessage = gameState.nearMissMessage;
-                this.successMessage = gameState.successMessage;
-                this.gameOverMessage = gameState.gameOverMessage;
-                this.shuffledItems = gameState.shuffledItems || this.items;
-                this.guessedGroups = gameState.guessedGroups || []; // Restore guessed groups
-            } else {
-                this.shuffleItems();
-            }
-        },
-        getGroupMessage(selectedItems) {
-            for (let i = 0; i < this.correctGroups.length; i++) {
-                let group = this.correctGroups[i];
-                if (this.arraysEqual(group.sort(), selectedItems.sort())) {
-                    return this.correctGroupMessages[i];
-                }
-            }
-            return "";
-        },
-        acceptCookies() {
-            this.showCookieConsent = false;
-            localStorage.setItem('cookieConsent', true);
+        .correct-groups-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-    }
-});
+
+        .correct-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+            width: 100%;
+            background-color: #729B9B;
+            padding: 10px;
+            border-radius: 5px;
+            box-sizing: border-box;
+            max-width: 100%; /* Ensure it doesn't exceed the container */
+        }
+
+        .correct-group div {
+            font-size: 12px; /* 10% smaller */
+            color: #E1FFE2; /* Update this line */
+            font-weight: 600; /* Semi-bold */
+        }
+
+        .correct-group p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #E1FFE2; /* Update this line */
+            font-weight: 600; /* Semi-bold */
+            text-align: center;
+        }
+
+        .grid-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 60px;
+            padding: 15px;
+            background-color: #B0C4DE;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s, font-size 0.3s;
+            box-sizing: border-box;
+            font-size: calc(10px + 1vw);
+        }
+
+        .grid-item.selected {
+            background-color: #555D66;
+        }
+
+        .grid-item.correct {
+            background-color: #729B8C;
+        }
+
+        .grid-item.wrong {
+            animation: flash-red 2s;
+        }
+
+        @keyframes flash-red {
+            0% { background-color: #A24242; }
+            100% { background-color: #B0C4DE; }
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #778290;
+            color: white;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #555D66;
+        }
+
+        @media (max-width: 600px) {
+            .grid, .correct-group {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .grid-item {
+                font-size: calc(8px + 1vw); /* Adjust font size for smaller screens */
+            }
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #A24242; /* Dark red */
+            font-weight: 600; /* Semi-bold */
+        }
+
+        .success-message {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #729B9B; /* Matching the green rectangles */
+        }
+
+        .game-over-message {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #A24242; /* Dark red */
+            font-weight: bold;
+        }
+
+        .attempts-left {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .wall-number {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .cookie-consent {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px; /* Smaller font size */
+            max-width: 400px;
+            width: calc(100% - 20px); /* Ensure it fits within the viewport */
+            box-sizing: border-box;
+        }
+
+        .cookie-consent button {
+            background-color: #555D66;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 12px; /* Smaller font size */
+            border-radius: 3px;
+        }
+
+        .cookie-consent button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <h1 style="font-size: 18px; color: #2A3630;">Dört adet dörtlü grup oluştur!</h1>
+        <div class="correct-groups-container">
+            <div v-for="(group, index) in correctGroupsWithMessages" :key="index" class="correct-group">
+                <div>{{ group.items.join(', ') }}</div>
+                <p>{{ group.message }}</p>
+            </div>
+        </div>
+        <div id="puzzle-grid" class="grid">
+            <div v-for="item in remainingItems" :key="item" @click="toggleSelection(item)" :class="{'grid-item': true, 'selected': selectedItems.includes(item), 'wrong': wrongGuessItems.includes(item)}">
+                {{ item }}
+            </div>
+        </div>
+        <p class="attempts-left">Kalan hak: {{ attemptsLeft }}</p>
+        <div v-if="wrongGuessMessage || nearMissMessage" class="message">
+            <span>{{ wrongGuessMessage }}</span>
+            <span v-if="nearMissMessage"> {{ nearMissMessage }}</span>
+        </div>
+        <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+        <div v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</div>
+        <div style="display: flex; justify-content: center;">
+            <button @click="deselectAll" :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }">Temizle</button>
+            <button @click="shuffleItems">Karıştır</button>
+            <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
+        </div>
+        <div class="wall-number">Duvar #<span id="wallNumber"></span> - <span id="wallDate"></span></div>
+        <div v-if="showCookieConsent" class="cookie-consent">
+            Bu oyun seansınızı hatırlamak için çerez kullanmaktadır.
+            <button @click="acceptCookies">Kabul et</button>
+        </div>
+    </div>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLPEHH99V"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZLPEHH99V');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        var script = document.createElement('script');
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        var wallNumber = Math.floor((date - new Date("2024-07-27")) / (1000 * 60 * 60 * 24)) + 1;
+         document.getElementById("wallNumber").innerText = wallNumber;
+        document.getElementById("wallDate").innerText = `${day}/${month}/${year}`;
+        script.src = 'app.js?v=' + year + month + day;
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>
