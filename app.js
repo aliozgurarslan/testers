@@ -1,20 +1,20 @@
 new Vue({
     el: '#app',
     data: {
-        items: ["1921", "1924", "1961", "1982", "1960", "1971", "1980", "2016", "1920", "912", "2019", "2901", "0001", "0010", "0011", "0100"],
-        shuffledItems: [],
-        correctGroups: [
-            ["Çember", "Tam", "Keçi", "Top"],
-            ["Çeşitlilik", "Tehlike", "Sfer", "Mühendislik"],
-            ["Ardıç", "Hepileri", "Akyürek", "Günaydın"],
-            ["Topuz", "Kılıç", "Mızrak", "Pala"]
-        ],
-        correctGroupMessages: [
-            "Sakal tipleri",
-            "Biyo_____",
-            "Tanınmış Engin'ler",
-            "İlkel silahlar"
-        ],
+    items: ["Çember", "Tam", "Keçi", "Top", "Çeşitlilik", "Tehlike", "Sfer", "Mühendislik", "Ardıç", "Hepileri", "Akyürek", "Günaydın", "Topuz", "Kılıç", "Mızrak", "Pala"],
+    shuffledItems: [],
+    correctGroups: [
+        ["Çember", "Tam", "Keçi", "Top"],
+        ["Çeşitlilik", "Tehlike", "Sfer", "Mühendislik"],
+        ["Ardıç", "Hepileri", "Akyürek", "Günaydın"],
+        ["Topuz", "Kılıç", "Mızrak", "Pala"]
+    ],
+    correctGroupMessages: [
+        "Sakal tipleri",
+        "Biyo_____",
+        "Tanınmış Engin'ler",
+        "İlkel silahlar"
+    ],
         correctItems: [],
         selectedItems: [],
         previousGuesses: [],
@@ -70,7 +70,7 @@ new Vue({
                 return;
             }
 
-            let currentGuess = [...this.selectedItems].sort().toString();
+            let currentGuess = [...this.selectedItems].toString();
             if (this.previousGuesses.includes(currentGuess)) {
                 this.wrongGuessMessage = 'Bu tahmini zaten yaptınız.';
                 this.selectedItems = [];
@@ -80,7 +80,7 @@ new Vue({
             this.previousGuesses.push(currentGuess);
 
             let isCorrect = this.correctGroups.some(group => {
-                return this.arraysEqual(group.sort(), this.selectedItems.sort());
+                return this.arraysEqual(group, this.selectedItems);
             });
 
             if (isCorrect) {
