@@ -23,10 +23,10 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
             width: 100%;
-            margin: 0 auto; /* Center the container */
-            overflow: hidden; /* Prevent overflow */
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
         }
 
         .grid {
@@ -36,45 +36,10 @@
             margin: 20px 0;
         }
 
-        .correct-groups-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .correct-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 10px;
-            width: 100%;
-            background-color: #729B9B;
-            padding: 10px;
-            border-radius: 5px;
-            box-sizing: border-box;
-            max-width: 100%; /* Ensure it doesn't exceed the container */
-        }
-
-        .correct-group div {
-            font-size: 12px; /* 10% smaller */
-            color: #E1FFE2; /* Update this line */
-            font-weight: 600; /* Semi-bold */
-        }
-
-        .correct-group p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #E1FFE2; /* Update this line */
-            font-weight: 600; /* Semi-bold */
-            text-align: center;
-        }
-
         .grid-item {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
             height: 60px;
             padding: 15px;
             background-color: #B0C4DE;
@@ -82,9 +47,7 @@
             border-radius: 5px;
             cursor: pointer;
             user-select: none;
-            transition: background-color 0.3s, font-size 0.3s;
-            box-sizing: border-box;
-            font-size: calc(10px + 1vw);
+            transition: background-color 0.3s;
         }
 
         .grid-item.selected {
@@ -135,136 +98,47 @@
             }
 
             .grid-item {
-                font-size: calc(8px + 1vw); /* Adjust font size for smaller screens */
+                font-size: calc(8px + 1vw);
             }
-        }
-
-        .message {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #A24242; /* Dark red */
-            font-weight: 600; /* Semi-bold */
-        }
-
-        .success-message {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #729B9B; /* Matching the green rectangles */
-        }
-
-        .game-over-message {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #A24242; /* Dark red */
-            font-weight: bold;
-        }
-
-        .attempts-left {
-            margin-top: 10px;
-            font-size: 14px;
         }
 
         .wall-number {
             margin-top: 10px;
-            font-size: 12px;
-        }
-
-        .cookie-consent {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px; /* Smaller font size */
-            max-width: 400px;
-            width: calc(100% - 20px); /* Ensure it fits within the viewport */
-            box-sizing: border-box;
-        }
-
-        .cookie-consent button {
-            background-color: #555D66;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            color: white;
-            font-size: 12px; /* Smaller font size */
-            border-radius: 3px;
-        }
-
-        .cookie-consent button:hover {
-            background-color: #777;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div id="app" class="container">
-        <h1 style="font-size: 18px; color: #2A3630;">Dört adet dörtlü grup oluştur!</h1>
-        <div class="correct-groups-container">
-            <div v-for="(group, index) in correctGroupsWithMessages" :key="index" class="correct-group">
-                <div>{{ group.items.join(', ') }}</div>
-                <p>{{ group.message }}</p>
-            </div>
+        <h1>Dört adet dörtlü grup oluştur!</h1>
+        <div class="grid">
+            <!-- Grid items injected here by Vue.js -->
         </div>
-        <div id="puzzle-grid" class="grid">
-            <div v-for="item in remainingItems" :key="item" @click="toggleSelection(item)" :class="{'grid-item': true, 'selected': selectedItems.includes(item), 'wrong': wrongGuessItems.includes(item)}">
-                {{ item }}
-            </div>
-        </div>
-        <p class="attempts-left">Kalan hak: {{ attemptsLeft }}</p>
-        <div v-if="wrongGuessMessage || nearMissMessage" class="message">
-            <span>{{ wrongGuessMessage }}</span>
-            <span v-if="nearMissMessage"> {{ nearMissMessage }}</span>
-        </div>
-        <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
-        <div v-if="gameOverMessage" class="game-over-message">{{ gameOverMessage }}</div>
-        <div style="display: flex; justify-content: center;">
-            <button @click="deselectAll" :disabled="selectedItems.length === 0" :style="{ backgroundColor: selectedItems.length > 0 ? '#778290' : '#A3A7AC' }">Temizle</button>
+        <div style="display: flex; justify-content: center; margin-top: 10px;">
+            <button @click="deselectAll">Temizle</button>
             <button @click="shuffleItems">Karıştır</button>
-            <button :disabled="selectedItems.length !== 4" :style="{ backgroundColor: selectedItems.length === 4 ? '#778290' : '#A3A7AC' }" @click="checkResults">Gönder</button>
+            <button @click="checkResults">Gönder</button>
         </div>
-        <div class="wall-number" id="wall-number"></div>
-        <div v-if="showCookieConsent" class="cookie-consent">
-            Bu oyun seansınızı hatırlamak için çerez kullanmaktadır.
-            <button @click="acceptCookies">Kabul et</button>
-        </div>
+        <div class="wall-number">Duvar #7 - 02/08/2024</div>
     </div>
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLPEHH99V"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-0ZLPEHH99V');
     </script>
+    <!-- Vue.js CDN for simplicity -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script>
-    var script = document.createElement('script');
+    <!-- Dynamic Script Loading for Cache Busting -->
+   <script>
     var date = new Date();
-    var year = date.getFullYear();
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
-
-    // Cache busting
-    var dateString = year + month + day;
-    script.src = 'app.js?v=' + dateString;
-    document.head.appendChild(script);
-
-    // Calculate wall number
-    var referenceDate = new Date('2024-07-27'); // Wall #1 reference date
-    var diffDays = Math.floor((date - referenceDate) / (1000 * 60 * 60 * 24));
-    var wallNumber = diffDays + 1; // Adding 1 to make wall #1 for reference date
-
-    // Format the wall number and date
-    var wallDate = day + '/' + month + '/' + year;
-    document.getElementById('wall-number').innerText = 'Duvar #' + wallNumber + ' - ' + wallDate;
+    var dateString = date.getFullYear().toString() + ("0" + (date.getMonth() + 1)).toString().slice(-2) + date.getDate().toString();
+    var script = document.createElement('script');
+    script.src = 'app_20240802.js';
+    document.body.appendChild(script);
 </script>
 </body>
 </html>
