@@ -9,7 +9,12 @@ new Vue({
             ["Kuru", "Açık", "Düz", "Mavi"],
             ["Vakı", "Şavap", "Kovuk", "Biva"]
         ],
-        correctGroupMessages: ["Şarap çeşitleri", "____saray", "Sözdizimsel yinelemelerinde kendinde olmayan bir harf ile belirlenenler", "R'leri söyleyemeyen insanların içecek siparişleri"],
+        correctGroupMessages: [
+            "Şarap çeşitleri",
+            "____saray",
+            "Sözdizimsel yinelemelerinde kendinde olmayan bir harf ile belirenler",
+            "R'leri söyleyemeyen insanların içecek siparişleri"
+        ],
         correctItems: [],
         selectedItems: [],
         previousGuesses: [],
@@ -86,6 +91,9 @@ new Vue({
         shuffleItems() {
             this.shuffledItems = [...this.items].sort(() => Math.random() - 0.5);
             this.storeGameState();
+        },
+        deselectAll() {
+            this.selectedItems = [];
         },
         revealAllGroups() {
             this.correctGroups.forEach(group => {
