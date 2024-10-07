@@ -19,17 +19,10 @@ new Vue({
         successMessage: "",
         gameOverMessage: "",
         isWrong: false,
-        wrongGuessItems: [],
-        showCookieConsent: true
+        wrongGuessItems: []
     },
     created() {
-        this.checkIfPlayedToday();
-        if (this.shuffledItems.length === 0) {
-            this.shuffleItems();
-        }
-        if (localStorage.getItem('cookieConsent')) {
-            this.showCookieConsent = false;
-        }
+        this.shuffleItems();
     },
     methods: {
         toggleSelection(item) {
@@ -81,11 +74,9 @@ new Vue({
             }
 
             this.selectedItems = [];
-            this.storeGameState();
         },
         shuffleItems() {
             this.shuffledItems = [...this.items].sort(() => Math.random() - 0.5);
-            this.storeGameState();
         },
         revealAllGroups() {
             this.correctGroups.forEach(group => {
@@ -93,39 +84,6 @@ new Vue({
                     this.correctItems.push(...group);
                 }
             });
-        },
-        storeGameState() {
-            localStorage.setItem('gameState', JSON.stringify({
-                correctItems: this.correctItems,
-                selectedItems: this.selectedItems,
-                previousGuesses: this.previousGuesses,
-                attemptsLeft: this.attemptsLeft,
-                wrongGuessMessage: this.wrongGuessMessage,
-                nearMissMessage: this.nearMissMessage,
-                successMessage: this.successMessage,
-                gameOverMessage: this.gameOverMessage,
-                shuffledItems: this.shuffledItems
-            }));
-        },
-        checkIfPlayedToday() {
-            const gameState = JSON.parse(localStorage.getItem('gameState'));
-            if (gameState) {
-                this.correctItems = gameState.correctItems;
-                this.selectedItems = gameState.selectedItems;
-                this.previousGuesses = gameState.previousGuesses;
-                this.attemptsLeft = gameState.attemptsLeft;
-                this.wrongGuessMessage = gameState.wrongGuessMessage;
-                this.nearMissMessage = gameState.nearMissMessage;
-                this.successMessage = gameState.successMessage;
-                this.gameOverMessage = gameState.gameOverMessage;
-                this.shuffledItems = gameState.shuffledItems;
-            } else {
-                this.shuffleItems();
-            }
-        },
-        acceptCookies() {
-            this.showCookieConsent = false;
-            localStorage.setItem('cookieConsent', true);
         },
         deselectAll() {
             this.selectedItems = [];
