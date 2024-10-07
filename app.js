@@ -9,12 +9,7 @@ new Vue({
             ["Kuru", "Açık", "Düz", "Mavi"],
             ["Vakı", "Şavap", "Kovuk", "Biva"]
         ],
-        correctGroupMessages: [
-            "Şarap çeşitleri",
-            "____saray",
-            "Sözdizimsel yinelemelerinde kendinde olmayan bir harf ile belirenler",
-            "R'leri söyleyemeyen insanların içecek siparişleri"
-        ],
+        correctGroupMessages: ["Şarap çeşitleri", "____saray", "Sözdizimsel yinelenmelerinde kendinde olmayan bir harf ile belirlenenler", "R'leri söyleyemeyen insanların içecek siparişleri"],
         correctItems: [],
         selectedItems: [],
         previousGuesses: [],
@@ -92,9 +87,6 @@ new Vue({
             this.shuffledItems = [...this.items].sort(() => Math.random() - 0.5);
             this.storeGameState();
         },
-        deselectAll() {
-            this.selectedItems = [];
-        },
         revealAllGroups() {
             this.correctGroups.forEach(group => {
                 if (group.some(item => !this.correctItems.includes(item))) {
@@ -119,7 +111,7 @@ new Vue({
             const gameState = JSON.parse(localStorage.getItem('gameState'));
             if (gameState) {
                 this.correctItems = gameState.correctItems;
-                this.selectedItems = gameState.selectedItems,
+                this.selectedItems = gameState.selectedItems;
                 this.previousGuesses = gameState.previousGuesses;
                 this.attemptsLeft = gameState.attemptsLeft;
                 this.wrongGuessMessage = gameState.wrongGuessMessage;
@@ -134,6 +126,9 @@ new Vue({
         acceptCookies() {
             this.showCookieConsent = false;
             localStorage.setItem('cookieConsent', true);
+        },
+        deselectAll() {
+            this.selectedItems = [];
         }
     }
 });
