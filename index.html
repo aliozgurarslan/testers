@@ -83,25 +83,6 @@
             background-color: #555D66;
         }
 
-        @media (max-width: 600px) {
-            .grid, .correct-group {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            .container {
-                padding: 10px;
-            }
-
-            button {
-                padding: 8px 15px;
-                font-size: 14px;
-            }
-
-            .grid-item {
-                font-size: calc(8px + 1vw);
-            }
-        }
-
         .wall-number {
             margin-top: 10px;
             font-size: 14px;
@@ -115,29 +96,15 @@
             <!-- Grid items injected here by Vue.js -->
         </div>
         <div style="display: flex; justify-content: center; margin-top: 10px;">
-            <button @click="deselectAll" :disabled="selectedItems.length === 0">Temizle</button>
-            <button @click="shuffleItems">Karıştır</button>
-            <button @click="checkResults" :disabled="selectedItems.length !== 4">Gönder</button>
+            <button>Temizle</button>
+            <button>Karıştır</button>
+            <button>Gönder</button>
         </div>
-        <div class="wall-number">Duvar #<span id="wallNumber"></span> - <span id="wallDate"></span></div>
+        <div class="wall-number">Duvar #7 - 02/08/2024</div>
     </div>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLPEHH99V"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-0ZLPEHH99V');
-    </script>
-
+    <!-- Vue.js CDN for simplicity -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script>
-        var date = new Date();
-        var dateString = date.getFullYear().toString() + ("0" + (date.getMonth() + 1)).toString().slice(-2) + ("0" + date.getDate()).slice(-2);
-        var script = document.createElement('script');
-        script.src = 'app.js';
-        document.body.appendChild(script);
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
